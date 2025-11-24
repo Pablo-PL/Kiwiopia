@@ -12,7 +12,7 @@ public class Tile : MonoBehaviour
     public bool hasCity = false;
     public bool occupied = false;
 
-    public string type = "";
+    public float terrain;
     public Vector2 position;
 
     public bool inAnimation = false;
@@ -24,6 +24,14 @@ public class Tile : MonoBehaviour
     void Start()
     {
         
+    }
+
+    void Awake()
+    {
+        Color color1 = Color.yellow;
+        Color color2 = Color.purple;
+        Color lerpColor = new Color(Mathf.Lerp(color1.r, color2.r, terrain), Mathf.Lerp(color1.g, color2.g, terrain), Mathf.Lerp(color1.b, color2.b, terrain));
+        GetComponent<Renderer>().material.color = lerpColor;
     }
 
     // Update is called once per frame
@@ -85,5 +93,14 @@ public class Tile : MonoBehaviour
         transform.localScale = originalScale;
         inAnimation = false;
 
+    }
+
+    public void ApplyTerrain(float newTerrain)
+    {
+        terrain = newTerrain;
+        Color color1 = Color.yellow;
+        Color color2 = Color.purple;
+        Color lerpColor = new Color(Mathf.Lerp(color1.r, color2.r, terrain), Mathf.Lerp(color1.g, color2.g, terrain), Mathf.Lerp(color1.b, color2.b, terrain));
+        GetComponent<Renderer>().material.color = lerpColor;
     }
 }

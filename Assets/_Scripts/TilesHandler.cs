@@ -9,6 +9,19 @@ public class TilesHandler : MonoBehaviour
     public GameObject hexTile;
     public List<Tile> tiles = new List<Tile>();
 
+    [SerializeField] private TerrainGeneration terrainGeneration;
+
+    private Tile getNewTile(Vector2 pos, int i, int x)
+    {
+        GameObject tileGameObject = Instantiate(hexTile, new Vector3(pos.x, 0, pos.y), Quaternion.identity);
+        tileGameObject.name = $"Tile_{i}_{x}";
+        tileGameObject.transform.parent = transform;
+        Tile newTile = tileGameObject.AddComponent<Tile>();
+        newTile.position = pos;
+        newTile.ApplyTerrain(terrainGeneration.GetTerrainAtPos(pos));
+        return newTile;
+    }
+
     void Start()
     {
         if (gridSize % 2 == 0)
@@ -22,13 +35,9 @@ public class TilesHandler : MonoBehaviour
             for (int x = 0; x < gridSize + i; x++)
             {
                 Vector2 pos = startingPosition + new Vector2(x * Mathf.Sqrt(3) + deltaX, 1.5f * i);
-                GameObject tileGameObject = Instantiate(hexTile, new Vector3(pos.x, 0, pos.y), Quaternion.identity);
-                tileGameObject.name = $"Tile_{i}_{x}";
-                tileGameObject.transform.parent = transform;
-                Tile newTile = tileGameObject.AddComponent<Tile>();
-                newTile.position = pos;
-                newTile.type = "grass";
-                
+
+                Tile newTile = getNewTile(pos, i, x);
+
                 if (x != 0) {
                     AddNeighbourAtIndex(tiles.Count - 1, newTile);
                 }
@@ -55,16 +64,10 @@ public class TilesHandler : MonoBehaviour
             for (int x = 0; x < gridSize + i; x++)
             {
                 Vector2 pos = startingPosition + new Vector2(x * Mathf.Sqrt(3) + deltaX, 1.5f * (gridSize + (gridSize - 2 - i)) );
-                GameObject tileGameObject = Instantiate(hexTile, new Vector3(pos.x, 0, pos.y), Quaternion.identity);
-                tileGameObject.name = $"Tile_{gridSize + (gridSize - 2 - i)}_{x}";
+                Tile newTile = getNewTile(pos, i, x);
 
-                tileGameObject.transform.parent = transform;
-                
-                Tile newTile = tileGameObject.AddComponent<Tile>();
-                newTile.position = pos;
-                newTile.type = "grass";
 
-                if( x != 0) {
+                if ( x != 0) {
                     AddNeighbourAtIndex(tiles.Count - 1, newTile);
                 }
                 AddNeighbourAtIndex(tiles.Count - 1 - x - (gridSize + i - 1) + x - 1, newTile);
