@@ -7,10 +7,12 @@ public class Tile : MonoBehaviour
     public List<Tile> neighbors = new List<Tile>();
 
     public bool hasCity = false;
-    public bool occupied = false;
+    public bool hasMountains = false;
+    public bool hasForest = false;
 
     public float humidity;
     public float temperature;
+    public float height;
 
     public string terrain;
 
@@ -24,12 +26,29 @@ public class Tile : MonoBehaviour
 
     }
 
-    public void ApplyTerrain(Vector2 newTerrain)
+    public void ApplyTerrain(Vector3 newTerrain)
     {
         humidity = newTerrain.x;
         temperature = newTerrain.y;
+        height = newTerrain.z;
 
-        int temperatureInt = Mathf.FloorToInt(temperature * 4f - 0.001f -0.3f);
+        GameObject mountain = null;
+        if (Mathf.Pow(height * height * (1-temperature), 0.33333f) > Global.heightToMountain)
+        {
+            mountain = Instantiate(Global.mountainPrefab, transform.position, Quaternion.identity);
+            mountain.transform.SetParent(transform);
+            hasMountains = true;
+        }
+
+        GameObject forest = null;
+        if (Mathf.Pow(humidity * humidity * temperature, 0.33333f) > Global.hotWetnessToForest)
+        {
+            forest = Instantiate(Global.forestPrefab, transform.position, Quaternion.identity);
+            forest.transform.SetParent(transform);
+            hasForest = true;
+        }
+
+        int temperatureInt = Mathf.FloorToInt(temperature * 4f - 0.001f +0.3f);
         int humidityInt = Mathf.FloorToInt(humidity * 5f - 0.001f);
         if (temperatureInt < 0)
         {
@@ -54,6 +73,15 @@ public class Tile : MonoBehaviour
             if (mat.name == terrain)
             {
                 GetComponent<Renderer>().material = mat;
+                if (mountain != null)
+                {
+                    mountain.GetComponent<Renderer>().material = mat;
+                }
+                if (forest != null)
+                {
+                    Renderer rend = forest.GetComponent<Renderer>();
+                    rend.material = mat;
+                }
                 break;
             }
         }

@@ -135,7 +135,7 @@ public class TilesHandler : MonoBehaviour
 
             foreach (Tile neighbor in current.neighbors)
             {
-                if (!cameFrom.ContainsKey(neighbor))
+                if (!cameFrom.ContainsKey(neighbor) && !neighbor.hasMountains)
                 {
                     cameFrom[neighbor] = current;
                     queue.Enqueue(neighbor);

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class UnitsHandler : MonoBehaviour
 {
@@ -16,9 +17,7 @@ public class UnitsHandler : MonoBehaviour
     {
         if (selectionHandler.state == 3)
         {
-            Debug.Log("state 3");
             Tile target = selectionHandler.getTileOnMouse();
-            Debug.Log(target.name);
             if (target != null)
             {
                 if (lastHoveredTile == target)
@@ -44,6 +43,10 @@ public class UnitsHandler : MonoBehaviour
                 lastHoveredTile = target;
             }
         }
+        if (selectionHandler.state != 3 && tmpLineRenderer != null)
+        {
+            Destroy (tmpLineRenderer);
+        }
     }
 
 
@@ -53,6 +56,7 @@ public class UnitsHandler : MonoBehaviour
         Unit unit = unitGameObj.AddComponent<Unit>();
         unit.name = "speraman";
         tile.unit = unit;
+        unit.tile = tile;
         unit.transform.parent = tile.transform;
     }
 
@@ -65,4 +69,6 @@ public class UnitsHandler : MonoBehaviour
             tile.unit = null;
         }
     }
+
+    
 }

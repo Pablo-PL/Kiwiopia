@@ -743,10 +743,14 @@ MonoBehaviour:
   humidityZOffset: 0
   temperatureXOffset: 0
   temperatureZOffset: 0
+  heightXOffset: 0
+  heightZOffset: 0
   humidityXScale: 0.2
   humidityZScale: 0.2
   temperatureXScale: 0.1
   temperatureZScale: 0.1
+  heightXScale: 0.2
+  heightZScale: 0.1
 --- !u!1 &744290152
 GameObject:
   m_ObjectHideFlags: 0
@@ -1120,6 +1124,8 @@ MonoBehaviour:
   mainCamera: {fileID: 330585545}
   cameraMovement: {fileID: 330585548}
   uIHandler: {fileID: 207599518}
+  unitsHandler: {fileID: 1277345734}
+  tilesHandler: {fileID: 487156672}
   state: 0
   lastClickedTile: {fileID: 0}
 --- !u!4 &816525041
@@ -1931,6 +1937,13 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 5e4cdddc430f88c42a43675caf23ddf2, type: 2}
   - {fileID: 2100000, guid: 0a78841d98bcdbf4d88953f36247190c, type: 2}
   - {fileID: 2100000, guid: 44205c6c5f1d0194d84695d39b7d9766, type: 2}
+  lineRendererPrefabReference: {fileID: 5312008685315154619, guid: e93f7352b7ed8f84d907ce1edcb9ea8a, type: 3}
+  heightToMoutainReference: 0.6
+  mountainPrefabReference: {fileID: 919132149155446097, guid: 55b580f0984c107418686e4029daf062, type: 3}
+  hotWetnessToForestReference: 0.6
+  forestPrefabReference: {fileID: 919132149155446097, guid: 0e309c115af643846a4b550faf722608, type: 3}
+  completedLineMaterialReference: {fileID: 2100000, guid: fb750fde732e961468eae32cec1147da, type: 2}
+  inProgressLineMaterialReference: {fileID: 2100000, guid: ae9d5e1c112cfda48b10bc2af131fd7a, type: 2}
 --- !u!4 &1450353043
 Transform:
   m_ObjectHideFlags: 0
