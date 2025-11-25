@@ -10,6 +10,7 @@ public class TilesHandler : MonoBehaviour
     public List<Tile> tiles = new List<Tile>();
     public GameObject centerTile;
 
+
     [SerializeField] private TerrainGeneration terrainGeneration;
 
     private Tile getNewTile(Vector2 pos, int i, int x)
@@ -94,9 +95,7 @@ public class TilesHandler : MonoBehaviour
         foreach (Tile tile in tiles)
         {
             tile.ApplyTerrain(terrainGeneration.GetTerrainAtPos(tile.transform.position.x, tile.transform.position.z));
-        }
-
-        
+        }   
     }
 
     void AddNeighbourAtIndex(int index, Tile tile)
@@ -110,5 +109,56 @@ public class TilesHandler : MonoBehaviour
         {
             Debug.LogWarning($"Index {index} is out of bounds for tiles list.");
         }
+    }
+
+    public List<Tile> shortestPath(Tile source, Tile end)
+    {
+        if (source == null || end == null)
+            return new List<Tile>();
+
+        // BFS kolejka
+        Queue<Tile> queue = new Queue<Tile>();
+        queue.Enqueue(source);
+
+        // S³ownik przechowuj¹cy poprzednika ka¿dego odwiedzonego wêz³a
+        Dictionary<Tile, Tile> cameFrom = new Dictionary<Tile, Tile>();
+        cameFrom[source] = null;
+
+        while (queue.Count > 0)
+        {
+            Tile current = queue.Dequeue();
+
+            if (current == end)
+            {
+                break; // znaleziono cel
+            }
+
+            foreach (Tile neighbor in current.neighbors)
+            {
+                if (!cameFrom.ContainsKey(neighbor))
+                {
+                    cameFrom[neighbor] = current;
+                    queue.Enqueue(neighbor);
+                }
+            }
+        }
+
+        // Odtworzenie œcie¿ki od end do source
+        List<Tile> path = new List<Tile>();
+        Tile temp = end;
+        while (temp != null)
+        {
+            path.Add(temp);
+            cameFrom.TryGetValue(temp, out temp);
+        }
+
+        path.Reverse(); // od source do end
+        if (path.Count > 0 && path[0] != source)
+        {
+            // brak po³¹czenia miêdzy source a end
+            return new List<Tile>();
+        }
+
+        return path;
     }
 }

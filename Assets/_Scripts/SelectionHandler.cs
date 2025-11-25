@@ -8,6 +8,9 @@ public class SelectionHandler : MonoBehaviour
     [SerializeField] private CameraMovement cameraMovement;
     [SerializeField] private UIHandler uIHandler;
 
+    public int state = 0; 
+    //0 - none; 1 - tile; 2 - city; 3 - unit
+
     public Tile lastClickedTile;
     private int howManyTimesClickedSame;
 
@@ -25,35 +28,47 @@ public class SelectionHandler : MonoBehaviour
 
     void OnSelect()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
+        Tile tile = getTileOnMouse();
+        if (tile == null)
         {
             return;
         }
+       
+        if (tile == lastClickedTile)
+        {
+            howManyTimesClickedSame++;
+            //////TO-DO
+        }
+        else
+        {
+            howManyTimesClickedSame = 0;
+        }
+
+        uIHandler.ClickedTile(tile, howManyTimesClickedSame);
+
+        cameraMovement.UpdateFocusPoint(tile.transform);
+        lastClickedTile = tile;   
+    }
+
+    public Tile getTileOnMouse()
+    {
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            return null;
+        }
         Vector2 mousePos = mousePosition.ReadValue<Vector2>();
-        Debug.Log($"pressd: {mousePos.x},{mousePos.y}");
         Ray ray = mainCamera.ScreenPointToRay(mousePos);
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             Tile tile = hit.collider.GetComponent<Tile>();
             if (tile != null)
             {
-                if (tile == lastClickedTile)
-                {
-                    howManyTimesClickedSame++;
-                    //////TO-DO
-                }
-                else
-                {
-                    howManyTimesClickedSame = 0;
-                }
-
-                uIHandler.ClickedTile(tile, howManyTimesClickedSame);
-
-                cameraMovement.UpdateFocusPoint(tile.transform);
-                lastClickedTile = tile;
+                return tile;
             }
         }
+        return null;
     }
+
     void Update()
     {
     }

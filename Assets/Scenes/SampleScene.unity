@@ -1120,6 +1120,7 @@ MonoBehaviour:
   mainCamera: {fileID: 330585545}
   cameraMovement: {fileID: 330585548}
   uIHandler: {fileID: 207599518}
+  state: 0
   lastClickedTile: {fileID: 0}
 --- !u!4 &816525041
 Transform:
@@ -1578,6 +1579,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UnitsHandler
   unitPrefab: {fileID: 919132149155446097, guid: b1b5da6ff79b1ee0dafa9dfd0b8ac136, type: 3}
+  tilesHandler: {fileID: 487156672}
+  selectionHandler: {fileID: 816525040}
+  lineRendererPrefab: {fileID: 5312008685315154619, guid: e93f7352b7ed8f84d907ce1edcb9ea8a, type: 3}
 --- !u!4 &1277345735
 Transform:
   m_ObjectHideFlags: 0

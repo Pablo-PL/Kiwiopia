@@ -12,8 +12,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private RectTransform cityMenu;
     [SerializeField] private RectTransform unitMenu;
 
-
-    private List<RectTransform> possible_menus = new List<RectTransform>();
+    private List<KeyValuePair<int, RectTransform>> menus = new List<KeyValuePair<int, RectTransform>>();
 
     private void Start()
     {
@@ -21,12 +20,13 @@ public class UIHandler : MonoBehaviour
     }
     public void ClickedTile(Tile tile, int num_of_times)
     {
+        if (tile == null) return;
         DisableAll();
 
-        possible_menus.Clear();
-        possible_menus.Add(tileMenu);
-        if (tile.city != null) possible_menus.Add(cityMenu);
-        if (tile.unit != null) possible_menus.Add(unitMenu);
+        menus.Clear();
+        menus.Add(new KeyValuePair<int, RectTransform>(1 ,tileMenu));
+        if (tile.city != null) menus.Add(new KeyValuePair<int, RectTransform>(2, cityMenu));
+        if (tile.unit != null) menus.Add(new KeyValuePair<int, RectTransform>(3, unitMenu));
 
         ActivateMenu(num_of_times);
         //Debug.Log($"Clicked tile: {tile.transform.name}, {num_of_times} times");
@@ -41,9 +41,14 @@ public class UIHandler : MonoBehaviour
 
     private void ActivateMenu(int num_of_times)
     {
-        int menu_index = num_of_times % (possible_menus.Count + 1);
-        if (menu_index < possible_menus.Count) {
-            possible_menus[menu_index].gameObject.SetActive(true);
+        int menu_index = num_of_times % (menus.Count + 1);
+        if (menu_index < menus.Count) {
+            menus[menu_index].Value.gameObject.SetActive(true);
+            selectionHandler.state = menus[menu_index].Key;
+        }
+        else
+        {
+            selectionHandler.state = 0;
         }
     }
 
