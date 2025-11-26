@@ -12,6 +12,7 @@ public class TilesHandler : MonoBehaviour
 
 
     [SerializeField] private TerrainGeneration terrainGeneration;
+    [SerializeField] private PlayerHandler playerHandler;
 
     private Tile getNewTile(Vector2 pos, int i, int x)
     {
@@ -96,6 +97,11 @@ public class TilesHandler : MonoBehaviour
         {
             tile.ApplyTerrain(terrainGeneration.GetTerrainAtPos(tile.transform.position.x, tile.transform.position.z));
         }   
+
+        foreach(Player player in playerHandler.players)
+        {
+            player.transform.gameObject.SetActive(true);
+        }
     }
 
     void AddNeighbourAtIndex(int index, Tile tile)
@@ -160,5 +166,10 @@ public class TilesHandler : MonoBehaviour
         }
 
         return path;
+    }
+
+    public Tile RandomTile()
+    {
+        return tiles[Random.Range(0, tiles.Count)];
     }
 }

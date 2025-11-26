@@ -8,6 +8,7 @@ public class UnitsHandler : MonoBehaviour
 
     [SerializeField] private TilesHandler tilesHandler;
     [SerializeField] private SelectionHandler selectionHandler;
+    [SerializeField] private UIHandler uIHandler;
 
     [SerializeField] private LineRenderer lineRendererPrefab;
     private GameObject tmpLineRenderer;
@@ -50,14 +51,16 @@ public class UnitsHandler : MonoBehaviour
     }
 
 
-    public void RecruitUnit(Tile tile)
+    public Unit RecruitUnit(Tile tile)
     {
         GameObject unitGameObj = Instantiate(unitPrefab, tile.transform.position, Quaternion.identity);
         Unit unit = unitGameObj.AddComponent<Unit>();
         unit.name = "speraman";
         tile.unit = unit;
         unit.tile = tile;
+        unit.owner = tile.owner;
         unit.transform.parent = tile.transform;
+        return unit;
     }
 
     public void DestroyUnit(Tile tile)
@@ -68,6 +71,12 @@ public class UnitsHandler : MonoBehaviour
             Destroy(tile.unit);
             tile.unit = null;
         }
+        if (tmpLineRenderer != null)
+        {
+            Destroy(tmpLineRenderer.gameObject);
+        }
+        selectionHandler.state = 0;
+        uIHandler.ClickedTile(tile, 0);
     }
 
     

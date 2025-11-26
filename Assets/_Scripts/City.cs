@@ -1,16 +1,50 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class City : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public List<Tile> cityTiles = new List<Tile>();
+    public Tile tile;
+    public int size = 0;
 
-    // Update is called once per frame
-    void Update()
+    public void ChangeSize(int newSize)
     {
-        
+        size = newSize;   
+        foreach (Tile cityTile in cityTiles)
+        {
+            cityTile.underCity = null;
+            cityTile.owner = null;
+        }
+        cityTiles.Clear();
+        foreach(Tile neighbour in tile.neighbors)
+        {
+            if (neighbour.underCity == null && (neighbour.owner == tile.owner || neighbour.owner == null))
+            {
+                neighbour.underCity = this;
+                cityTiles.Add(neighbour);
+                neighbour.owner = tile.owner;
+            }
+        }
+        for (int i = 0; i < newSize-1; i++)
+        {
+            int cityTilesCount = cityTiles.Count;
+            for( int j = 0; j < cityTilesCount; j++) 
+            {
+                Tile cityTile = cityTiles[j];
+                foreach (Tile neighbour in cityTile.neighbors)
+                {
+                    if (!cityTiles.Contains(neighbour) && neighbour.underCity == null && (neighbour.owner == tile.owner || neighbour.owner == null) && neighbour != tile)
+                    {
+                        neighbour.underCity = this;
+                        cityTiles.Add(neighbour);
+                        neighbour.owner = tile.owner;
+                    }
+                }
+            }
+        }
+        foreach(Tile cityTile in cityTiles)
+        {
+            cityTile.transform.position = new Vector3(cityTile.transform.position.x, .15f, cityTile.transform.position.z);
+        }
     }
 }

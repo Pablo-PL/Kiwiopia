@@ -24,7 +24,7 @@ public class UIHandler : MonoBehaviour
         DisableAll();
 
         menus.Clear();
-        menus.Add(new KeyValuePair<int, RectTransform>(1 ,tileMenu));
+        if (tile.unit != null) menus.Add(new KeyValuePair<int, RectTransform>(1 ,tileMenu));
         if (tile.city != null) menus.Add(new KeyValuePair<int, RectTransform>(2, cityMenu));
         if (tile.unit != null) menus.Add(new KeyValuePair<int, RectTransform>(3, unitMenu));
 
@@ -66,5 +66,10 @@ public class UIHandler : MonoBehaviour
     public void DestroyUnit()
     {
         unitsHandler.DestroyUnit(selectionHandler.lastClickedTile);
+    }
+
+    public void UpgradeCity()
+    {
+        selectionHandler.lastClickedTile.city.ChangeSize(selectionHandler.lastClickedTile.city.size + 1);
     }
 }

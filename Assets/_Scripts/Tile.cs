@@ -17,9 +17,10 @@ public class Tile : MonoBehaviour
     public string terrain;
 
     public Vector2 position;
-
+    public Player owner;
     public Unit unit;
     public City city;
+    public City underCity;
 
     void Start()
     {

@@ -5,6 +5,7 @@ public class Unit : MonoBehaviour
 {
     public string type;
     public bool isMoving = false;
+    public Player owner;
     public Tile tile;
 
     public void MoveUnit(List<Tile> path)

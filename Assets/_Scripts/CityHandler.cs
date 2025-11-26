@@ -13,10 +13,13 @@ public class CityHandler : MonoBehaviour
             return;
         }
 
+        tile.owner = tile.unit.owner;
+
         GameObject cityObj = Instantiate(cityPrefab, tile.transform.position, Quaternion.identity);
         City city = cityObj.AddComponent<City>();
+        city.tile = tile;
         tile.city = city;
         cityObj.transform.SetParent(tile.transform);
-
+        city.ChangeSize(1);
     }
 }
