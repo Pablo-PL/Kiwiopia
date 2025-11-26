@@ -7,6 +7,10 @@ public class City : MonoBehaviour
     public Tile tile;
     public int size = 0;
 
+    public int money = 0;
+    public int wood = 0;
+    public int stone = 0;
+
     public void ChangeSize(int newSize)
     {
         size = newSize;   
@@ -46,5 +50,29 @@ public class City : MonoBehaviour
         {
             cityTile.transform.position = new Vector3(cityTile.transform.position.x, .15f, cityTile.transform.position.z);
         }
+    }
+
+    private void Update()
+    {
+        SendResourcesToPlayer();
+    }
+
+    void SendResourcesToPlayer()
+    {
+        if (money == 0 && wood == 0 && stone == 0)
+        {
+            return;
+        }
+        tile.owner.RecieveResources(money, wood, stone);
+        money = 0;
+        wood = 0;
+        stone = 0;
+    }
+
+    public void RecieveResources(int rMoney, int rWood, int rStone)
+    {
+        money += rMoney;
+        wood += rWood;
+        stone += rStone;
     }
 }

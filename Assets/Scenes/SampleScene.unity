@@ -2586,6 +2586,9 @@ MonoBehaviour:
   startingMoneyReference: 20
   startingWoodReference: 5
   startingStoneReference: 5
+  timePerCoinPerTileReference: 4
+  timePerLogPerForestReference: 3
+  timePerStonePerMountainReference: 3
 --- !u!4 &1450353043
 Transform:
   m_ObjectHideFlags: 0

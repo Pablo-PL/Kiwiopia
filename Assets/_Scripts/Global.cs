@@ -77,5 +77,9 @@ public class Global : MonoBehaviour
         startingMoney = startingMoneyReference;
         startingWood = startingWoodReference;
         startingStone = startingStoneReference;
+
+        timePerCoinPerTile = timePerCoinPerTileReference;
+        timePerLogPerForest = timePerLogPerForestReference;
+        timePerStonePerMountain = timePerStonePerMountainReference;
     }
 }

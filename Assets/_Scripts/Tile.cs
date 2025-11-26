@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.InputSystem.XR.Haptics;
 
 public class Tile : MonoBehaviour
 {
@@ -22,9 +23,43 @@ public class Tile : MonoBehaviour
     public City city;
     public City underCity;
 
-    void Start()
-    {
+    public float generationTimer = 0;
+    public float generationTimer1 = 0;
 
+    void Update()
+    {
+        if (underCity != null)
+        {
+            generationTimer += Time.deltaTime;
+            generationTimer1 += Time.deltaTime;
+            if (!hasMountains && !hasForest)
+            {
+                int generated = (int)Mathf.Floor(generationTimer / Global.timePerCoinPerTile);
+                
+                generationTimer -= generated * Global.timePerCoinPerTile;
+                SendToCity(generated, 0, 0);
+            }
+            else if (hasMountains && hasForest)
+            {
+                int generatedWood = (int)Mathf.Floor(generationTimer / Global.timePerLogPerForest);
+                generationTimer -= generatedWood * Global.timePerLogPerForest;
+                int generatedStone = (int)Mathf.Floor(generationTimer1 / Global.timePerStonePerMountain);
+                generationTimer1 -= generatedStone * Global.timePerStonePerMountain;
+                SendToCity(0, generatedWood, generatedStone);
+            }
+            else if (hasForest)
+            {
+                int generated = (int)Mathf.Floor(generationTimer / Global.timePerLogPerForest);
+                generationTimer -= generated * Global.timePerLogPerForest;
+                SendToCity(0, generated, 0);
+            }
+            else if (hasMountains)
+            {
+                int generated = (int)Mathf.Floor(generationTimer / Global.timePerStonePerMountain);
+                generationTimer -= generated * Global.timePerStonePerMountain;
+                SendToCity(0, 0, generated);
+            }
+        }
     }
 
     public void ApplyTerrain(Vector3 newTerrain)
@@ -89,5 +124,10 @@ public class Tile : MonoBehaviour
 
         /*terrainType = (int)Mathf.Floor(terrain * 4f);
         GetComponent<Renderer>().material = Global.terrainMaterials[terrainType];*/
+    }
+
+    void SendToCity(int money, int wood, int stone)
+    {
+        underCity.RecieveResources(money, wood, stone);
     }
 }

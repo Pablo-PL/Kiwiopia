@@ -56,4 +56,11 @@ public class Player : MonoBehaviour
     {
         SendValuesToUI();
     }
+
+    public void RecieveResources(int rMoney, int rWood, int rStone)
+    {
+        money += rMoney;
+        wood += rWood;
+        stone += rStone;
+    }
 }
