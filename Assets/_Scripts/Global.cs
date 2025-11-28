@@ -71,6 +71,9 @@ public class Global : MonoBehaviour
     public static UnitType[] unitTypes;
     [SerializeField] private UnitType[] unitTypesReference;
 
+    public static UIHandler UIHandler;
+    [SerializeField] private UIHandler UIHandlerReference;
+
 
     public static int[,] newCityResourceCost = {
         {20, 5, 5},
@@ -115,5 +118,7 @@ public class Global : MonoBehaviour
         timePerStonePerMountain = timePerStonePerMountainReference;
 
         unitTypes = unitTypesReference;
+
+        UIHandler = UIHandlerReference;
     }
 }

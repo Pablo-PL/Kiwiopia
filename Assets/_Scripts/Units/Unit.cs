@@ -32,12 +32,12 @@ public class Unit : MonoBehaviour
 
             if (!owner.TakeResources(coinsToTake, 0, 0))
             {
-                unitsHandler.DestroyUnit(tile);
+                unitsHandler.DestroyUnit(this);
             }
         }
     }
 
-    public void MoveUnit(List<Tile> path)
+    public void Move(List<Tile> path)
     {
 
         if (isMoving)
@@ -85,7 +85,7 @@ public class Unit : MonoBehaviour
             path[i + 1].unit = this;
             path[i + 1].owner = this.owner;
             this.tile = path[i + 1];
-            this.owner.UnitMoved();
+            this.owner.UpdateVisiblitity();
             completedLineRenderer.positionCount = i + 2;
             completedLineRenderer.SetPosition(i + 1, path[i+1].transform.position + Vector3.up * 0.56f);
             line.positionCount = path.Count - i - 1;

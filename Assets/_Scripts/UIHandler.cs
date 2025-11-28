@@ -84,7 +84,10 @@ public class UIHandler : MonoBehaviour
 
     public void DestroyUnit()
     {
-        unitsHandler.DestroyUnit(selectionHandler.lastClickedTile);
+        if (unitsHandler.DestroyUnit(selectionHandler.lastClickedTile.unit))
+        {
+            ClickedTile(selectionHandler.lastClickedTile, 0);
+        }
     }
 
     public void UpgradeCity()

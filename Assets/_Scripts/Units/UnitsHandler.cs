@@ -68,23 +68,23 @@ public class UnitsHandler : MonoBehaviour
         return unit;
     }
 
-    public void DestroyUnit(Tile tile)
+    public bool DestroyUnit(Unit unit)
     {
-        if (tile.unit != null)
+        if (unit.owner.units.Count <= 1)
         {
-            units.Remove(tile.unit);
-            tile.owner.RemoveUnit(tile.unit);
-            Destroy(tile.unit.gameObject);
-            Destroy(tile.unit);
-            tile.unit = null;
+            return false;
         }
+        unit.tile.unit = null;
+        units.Remove(unit);
+        unit.owner.RemoveUnit(unit);
+        Destroy(unit.gameObject);
+        Destroy(unit);
+        
         if (tmpLineRenderer != null)
         {
             Destroy(tmpLineRenderer.gameObject);
         }
         selectionHandler.state = 0;
-        uIHandler.ClickedTile(tile, 0);
+        return true;
     }
-
-    
 }

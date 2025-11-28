@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Unity.Netcode;
 
-public class Player : MonoBehaviour
+public class Player : NetworkBehaviour
 {
     public int hash;
     public int money;
@@ -17,8 +18,15 @@ public class Player : MonoBehaviour
     public List<Unit> units = new List<Unit>();
     public List<City> citys = new List<City>();
 
-    void Awake()
+
+    override public void OnNetworkSpawn()
     {
+        if (!IsOwner) return;
+        tilesHandler = GameObject.Find("Tiles").GetComponent<TilesHandler>();
+        unitsHandler = GameObject.Find("Units").GetComponent<UnitsHandler>();
+        cameraMovement = GameObject.Find("Main Camera").GetComponent<CameraMovement>();
+        uIHandler = Global.UIHandler;
+
         hash = Random.Range(0, 1000000000);
 
         money = Global.startingMoney;
@@ -49,7 +57,7 @@ public class Player : MonoBehaviour
             Destroy(gameObject);
         }
         cameraMovement.UpdateFocusPoint(startingTile.transform);
-        UnitMoved();
+        UpdateVisiblitity();
 
     }
 
@@ -62,6 +70,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        if (!IsOwner) return;
         SendValuesToUI();
     }
 
@@ -96,7 +105,7 @@ public class Player : MonoBehaviour
         units.Remove(unit);
     }
 
-    public void UnitMoved()
+    public void UpdateVisiblitity()
     {
         List<Tile> visibleTiles = new List<Tile>();
 

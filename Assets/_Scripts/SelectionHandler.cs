@@ -49,7 +49,7 @@ public class SelectionHandler : MonoBehaviour
             howManyTimesClickedSame = 0;
             if (state == 3)
             {
-                lastClickedTile.unit.MoveUnit(tilesHandler.shortestPath(lastClickedTile, tile));
+                lastClickedTile.unit.Move(tilesHandler.shortestPath(lastClickedTile, tile));
                 state = 0;
                 uIHandler.ClickedTile(lastClickedTile, 0);
                 return;
